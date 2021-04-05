@@ -1,0 +1,37 @@
+package com.zichen.thresd.code;
+
+import org.openjdk.jol.info.ClassLayout;
+
+public class T0_CacheLinePadding {
+    private static class T{
+        private static long x = 0L; //8字节
+    }
+    public static T[] arr = new T[2];
+
+    static {
+        arr[0] = new T();
+        arr[1] = new T();
+    }
+
+    public static void main(String[] args) throws Exception{
+        T t = new T();
+        System.out.println("T的markword布局：" + ClassLayout.parseInstance(t).toPrintable());
+        Thread t1 = new Thread(() -> {
+           for(long i = 0; i < 1000_0000L; i++){
+               arr[0].x = i;
+           }
+        });
+        Thread t2 = new Thread(() -> {
+            for(long i = 0; i < 1000_0000L; i++){
+                arr[1].x = i;
+            }
+        });
+
+        final long start = System.nanoTime();
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+        System.out.println((System.nanoTime() - start)/100000 + "毫秒");
+    }
+}
