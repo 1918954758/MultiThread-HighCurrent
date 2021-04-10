@@ -1,0 +1,19 @@
+Java 带File文件及其它参数的Post请求
+对于文件上传，客户端通常就是页面，在前端web页面里实现上传文件不是什么难事，写个form,加上enctype = “multipart/form-data”,在写个接收的就可以了，没什么难的。
+如果要用java.net.HttpURLConnection，java后台来实现文件上传，还真有点搞头，实现思路和具体步骤就是模拟页面的请求，页面发出的格式如下：
+-----------------------------7da2e536604c8
+Content-Disposition: form-data; name=“luid”
+
+123
+-----------------------------7da2e536604c8
+Content-Disposition: form-data; name=“file1”; filename=“D:\haha.txt”
+Content-Type: text/plain
+
+haha
+hahaha
+-----------------------------7da2e536604c8
+Content-Disposition: form-data; name=“file”; filename=“D:\huhu.png”
+Content-Type: application/octet-stream
+
+这里是图片的二进制数据
+-----------------------------7da2e536604c8–
