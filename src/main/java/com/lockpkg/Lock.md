@@ -1,3 +1,5 @@
+###视频地址：
+[JAVA](https://www.bilibili.com/video/BV1ta4y1J7vT?p=29)
 ### 1、Lock
 1）、ReentrantLock - 可重入锁
 ```txt
@@ -20,10 +22,8 @@
 
 ---------------------------
 ### 2、JUC
-
 ---------------------------
 ### 3、ReentrantLock重入锁
-
 ---------------------------
 ### 4、AQS原理分析 （同步工具）
 - 独占 -> 互斥
@@ -40,7 +40,6 @@
 
 ---------------------------
 ### 5、AQS源码分析
-
 
 ```java
 class AbstractQueuedSynchronizer {
@@ -116,6 +115,9 @@ class AbstractQueuedSynchronizer {
  * 每个线程也相当于一个Node 
  */
 class Node {
+    static final Node SHARED = new Node();//共享锁
+    static final Node EXCLUSIVE = null;//独占锁
+    
     /** waitStatus value to indicate thread has cancelled */
     static final int CANCELLED =  1;//取消状态，或删除该状态的节点，让后面的节点上来
     /** waitStatus value to indicate successor's thread needs unparking */
@@ -158,7 +160,8 @@ class LockSupport{
 }
 ```
 
-[JAVA](https://www.bilibili.com/video/BV1ta4y1J7vT?p=29)
+### 6、AQS执行图示
+![image-AQS执行过程](image/AQS执行过程.png)
 
-https://www.bilibili.com/video/BV1ta4y1J7vT?p=29
+
 
