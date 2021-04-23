@@ -206,5 +206,62 @@ class UNSAFE{
 ### 6、AQS执行图示
 ![image-AQS执行过程](image/AQS执行过程.png)
 
+### 7、FairLock  and   NonFairLock
+```java
+static final class NonfairSync extends Sync {
+    private static final long serialVersionUID = 7316153563782823691L;
 
+    /**
+     * Performs lock.  Try immediate barge, backing up to normal
+     * acquire on failure.
+     */
+    final void lock() {
+        //非公平锁是不会管当前线程是否在队列中的
+        if (compareAndSetState(0, 1))//直接去修改state=1
+            setExclusiveOwnerThread(Thread.currentThread());//给当前线程加锁
+        else
+            acquire(1);
+    }
+
+    protected final boolean tryAcquire(int acquires) {
+        return nonfairTryAcquire(acquires);
+    }
+}
+
+
+
+class FairSync extends Sync {
+
+    private static final long serialVersionUID = -3000897897090466540L;
+
+    final void lock() {
+        acquire(1);
+    }
+
+    /**
+     * Fair version of tryAcquire.  Don't grant access unless
+     * recursive call or no waiters or is first.
+     */
+    protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {
+            //公平锁核心，要判断即将获得锁的线程是否在队列中，
+            if (!hasQueuedPredecessors() &&
+                    compareAndSetState(0, acquires)) {//如果该线程不在队列中，并且state=1设置成功
+                setExclusiveOwnerThread(current);//给该线程加锁
+                return true;
+            }
+        }
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc < 0)
+                throw new Error("Maximum lock count exceeded");
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+```
 
