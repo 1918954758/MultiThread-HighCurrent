@@ -24,7 +24,7 @@ public class ConditionNotify implements Runnable {
         try {
             lock.lock();
             System.out.println("Condition - Notify - start");
-            condition.signal();
+            condition.signal();// unpark阻塞状态的线程
             System.out.println("Condition - Notify - end");
         } finally {
             lock.unlock();
