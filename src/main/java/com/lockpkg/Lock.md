@@ -144,6 +144,43 @@ class Node {
     }
 }
 
+class AbstractQueuedSynchronizer {
+    /**
+     * 唤醒
+     */
+    private void unparkSuccessor(Node node) {
+        // 获取当前线程的waitStatus
+        int ws = node.waitStatus;
+        /*
+         * waitStatus =   -1   |   -2 |   -3   |   1   |   0
+         * SIGNAL | CONDITION | PROPAGATE | CANCELLED | （INIT）
+         */
+        if (ws < 0)
+            // CAS 将当前线程的status改为 0  ，释放锁
+            compareAndSetWaitStatus(node, ws, 0);
+
+        // 由于每一个线程都被封装成一个Node
+        Node s = node.next;
+        //判断当前释放锁的Node(线程) 的 下一个 Node(线程) 是否为空？
+        if (s == null || s.waitStatus > 0) {
+            s = null;
+            // 寻找后面不为空的Node(线程) ，然后将它复制给 s
+            for (Node t = tail; t != null && t != node; t = t.prev)
+                if (t.waitStatus <= 0)
+                    s = t;
+        }
+        // 将不为空的 s 唤醒
+        if (s != null)
+            LockSupport.unpark(s.thread);
+    }
+
+    private static final boolean compareAndSetWaitStatus(Node node, int expect, int update) {
+        return unsafe.compareAndSwapInt(node, waitStatusOffset, expect, update);
+    }
+}
+
+
+
 class LockSupport{
     //唤醒线程
     public static void unpark(Thread thread) {
@@ -157,6 +194,12 @@ class LockSupport{
         UNSAFE.park(false, 0L);
         setBlocker(t, null);
     }
+}
+
+class UNSAFE{
+    public native void unpark(Object var1);//休眠
+    public native void park(boolean var1, long var2);//唤醒
+    public final native boolean compareAndSwapInt(Object var1, long var2, int var4, int var5);
 }
 ```
 
