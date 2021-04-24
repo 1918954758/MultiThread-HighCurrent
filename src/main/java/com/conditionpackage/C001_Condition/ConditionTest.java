@@ -21,6 +21,11 @@ public class ConditionTest {
 
         //new Thread(new ConditionNotify(lock, condition)).start();
         new Thread(new ConditionWait(lock, condition)).start();
-        new Thread(new ConditionNotify(lock, condition)).start();
+
+        new Thread(new ConditionNotify__001(lock, condition)).start();
+        new Thread(new ConditionNotify__002(lock, condition)).start();
+        new Thread(new ConditionNotify__003(lock, condition)).start();
+        new Thread(new ConditionNotify__004(lock, condition)).start();
+        new Thread(new ConditionNotify__005(lock, condition)).start();
     }
 }

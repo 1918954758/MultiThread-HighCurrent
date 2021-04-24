@@ -205,8 +205,10 @@ class UNSAFE{
 }
 ```
 
-### 6、AQS执行图示
+### 6、AQS图示
 ![image-AQS执行过程](image/AQS执行过程.png)
+
+![image-AQS结构](image/AQS结构.png)
 
 ### 7、FairLock  and   NonFairLock
 ```java
