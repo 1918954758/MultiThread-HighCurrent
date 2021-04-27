@@ -1,6 +1,9 @@
 package com.serializablepack;
 
 import java.beans.Transient;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -16,6 +19,23 @@ public class User implements Serializable {
 
     private transient String name;
     private int age;
+
+    /**
+     * 和transient配合使用，可以序列transient修饰的变量
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeObject(name);
+    }
+
+    /**
+     * 和transient配合使用，可以序列transient修饰的变量
+     */
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        name = (String) s.readObject();
+    }
+
 
     @Override
     public String toString() {
