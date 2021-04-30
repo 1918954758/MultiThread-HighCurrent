@@ -13,7 +13,7 @@ haha
 hahaha
 -----------------------------7da2e536604c8
 Content-Disposition: form-data; name=“file”; filename=“D:\huhu.png”
-Content-Type: application/octet-stream
+Content-Type: application/octet-streamtest
 
 这里是图片的二进制数据
 -----------------------------7da2e536604c8–
