@@ -113,11 +113,11 @@ public class TestLambda2 {
     }
 
     List<Employee> employees = Arrays.asList(
-            new Employee("张三", 18, 9999.99),
-            new Employee("李四", 38, 5555.99),
-            new Employee("王五", 50, 3333.33),
-            new Employee("赵六", 17, 6666.66),
-            new Employee("田七", 8, 9999.99)
+            new Employee("张三", 18, 9999.99, Status.FREE),
+            new Employee("李四", 38, 5555.99, Status.BUSY),
+            new Employee("王五", 50, 3333.33, Status.VOCATION),
+            new Employee("赵六", 17, 6666.66, Status.FREE),
+            new Employee("田七", 8, 9999.99, Status.VOCATION)
     );
 
     @Test
