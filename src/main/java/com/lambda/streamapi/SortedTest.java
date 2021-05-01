@@ -20,7 +20,8 @@ public class SortedTest {
             new Employee("田七", 8, 1111.11, Status.BUSY),
             new Employee("解八", 8, 4444.44, Status.FREE),
             new Employee("庞九", 8, 2222.22, Status.VOCATION),
-            new Employee("母十", 8, 8888.88, Status.BUSY));
+            new Employee("母十", 8, 8888.88, Status.BUSY)
+    );
 
     /**
      * 自然排序   Comparable
