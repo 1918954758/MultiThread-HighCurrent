@@ -57,10 +57,14 @@ class Func1 {
 - 映射
     - map - 接收 Lambda，将元素转换成其他形式或提取信息，接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素。
 ```java
-List<String> list = Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee");
-        list.stream().map((str) -> str.toUpperCase()).forEach(System.out::println);
+class Test {
+    public static void main(String[] args) {
+      List<String> list = Arrays.asList("aaa", "bbb", "ccc", "ddd", "eee");
+      list.stream().map((str) -> str.toUpperCase()).forEach(System.out::println);
 
-        employees.stream().map(Employee::getName).forEach(System.out::println);
+      employees.stream().map(Employee::getName).forEach(System.out::println);
+    }
+}
 ```
 - 
     - flatMap - 接收一个函数作为参数，将流中的每个值都换成留一个流，然后把所有流连城一个流
@@ -90,7 +94,51 @@ class Test{
 - 排序
   - sorted() - 自然排序，按照字典的顺序排序
   - sorted(Comparator com) - 定制排序
+- 规约
+  - reduce(T identity, BinaryOperator) / reduce(BinaryOperator) - 可以将流中元素反复结合起来，得到一个值。返回 T
+  - reduce(BinaryOperator b) - 可以将流中元素反复结合起来，得到一个值。返回Optional<T>。
+备注：map和reduce的连接通常称为map-reduce模式，因Google用它来进行网络搜索而出名。
+```java
+class Test {
+  @Test
+  public void test() {
+    List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    Integer reduce = list.stream().reduce(1, (x, y) -> x + y);
+    System.out.println(reduce);
 
+    System.out.println("=========================");
+
+    Optional<Double> reduce1 = employees.stream().map(Employee::getSalary).reduce(Double::sum);
+    System.out.println(reduce1.get());
+  }
+}
+```
+- 收集
+  - collect - 将流转换成其他形式。接收一个Collector接口的实现，用于给Stream中元素做汇总的方法。
+  - collect中的组函数，见代码CollectTest.java
+  - collect中的分组函数，见代码CollectTest.java
+  - collect中的分区，见代码CollectTest.java
+  - collect中的joining，见代码CollectTest.java
+```java
+class Test {
+  @Test
+  public void test() {
+    // 将集合收集到list中
+    List<String> collect = employees.stream().map(Employee::getName).collect(Collectors.toList());
+    System.out.println(collect);
+    System.out.println("================");
+    //collect.forEach(System.out::println);
+    // 将集合收集到set中
+    Set<String> collect1 = employees.stream().map(Employee::getName).collect(Collectors.toSet());
+    System.out.println(collect1);
+    System.out.println("================");
+    // 将结果收集到特殊的集合中的操作
+    LinkedHashSet<String> collect2 = employees.stream().map(Employee::getName).collect(Collectors.toCollection(LinkedHashSet::new));
+    System.out.println(collect2);
+  }
+  
+}
+```
 #### 终止操作
     一个终止的操作，执行中间操作链，并产生结果
 - 终止操作
